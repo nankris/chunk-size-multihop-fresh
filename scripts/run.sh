@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-cd /content/132b
+cd /content/chunkfresh
 mkdir -p results
 nvidia-smi
 date -Is

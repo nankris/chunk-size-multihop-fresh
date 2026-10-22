@@ -11,7 +11,7 @@ else:
  decision=f'The result is inconclusive under the registered rule. The adjusted interval excludes zero, but the unrounded gain is {gain:.4f} points, just below the fixed 1.5-point cutoff. The interval also includes 1.5, so the experiment neither clears the success rule nor rules out that practical margin. A favorable secondary comparison cannot rescue the primary prediction.'
 text=f'''# {title}
 
-*3,600 fresh multi-hop questions, a fixed evidence budget, and a follow-up designed around the effect we actually saw last time.*
+*3,600 fresh multi-hop questions, a fixed evidence budget, and a follow-up designed around the effect I saw last time.*
 
 Your RAG test retrieves five chunks, so you change the chunk limit from 128 to 1,024 and rerun it. Better answers might mean better evidence, or simply more text in the reader’s prompt. Those are different engineering changes behind the same setting.
 
@@ -19,11 +19,11 @@ Your RAG test retrieves five chunks, so you change the chunk limit from 128 to 1
 
 Here is my headline result: **{gain:+.2f} percentage points of answer F1** for a 1,024-token chunk limit versus 128, with both policies receiving 1,024 evidence tokens. The simultaneous confidence interval was **[{h['simultaneous_lo_pp']:+.2f}, {h['simultaneous_hi_pp']:+.2f}] points**. The registered verdict is **{S['verdict']}**.
 
-This is experiment 132b in Tech in General’s series. The letter matters: it follows an earlier test that did not settle the question.
+This is a follow-up to [an earlier test](https://github.com/nankris/rag-chunk-size-flip) that did not settle the question.
 
 ## Why I ran it again
 
-Experiment 132 found a 2.1-point answer-F1 improvement on 600 HotpotQA questions. Its adjusted interval ran from minus 0.3 to plus 4.6 points. The original five-point practical threshold was missed, and the predicted retrieval ranking flip was absent.
+The first version of this experiment found a 2.1-point answer-F1 improvement on 600 HotpotQA questions. Its adjusted interval ran from minus 0.3 to plus 4.6 points. The original five-point practical threshold was missed, and the predicted retrieval ranking flip was absent.
 
 That result suggested a smaller effect worth testing. It did not justify declaring that larger chunks win. I also learned that many benchmark paragraphs are shorter than their configured chunk limit. Calling a setting “1,024 tokens” does not mean the reader actually receives passages that long.
 
@@ -31,7 +31,7 @@ For the follow-up, I registered a narrower prediction before retrieval or answer
 
 ## What I tested
 
-I used 3,600 questions from the public Hugging Face dataset `cmriat/2wikimultihopqa`, validation split. These are fresh relative to the previous HotpotQA experiment. A fixed shuffle selected the questions, with 16 other questions reserved and excluded. No new reader pilot was used to tune the confirmation.
+I used 3,600 questions from the public Hugging Face dataset `cmriat/2wikimultihopqa`, validation split. These are fresh relative to the earlier HotpotQA run. A fixed shuffle selected the questions, with 16 other questions reserved and excluded. No new reader pilot was used to tune the confirmation.
 
 The searchable corpus contained 19,945 distinct context-paragraph versions from those questions. Every query searched that global corpus. It did not receive just its own question’s convenient set of context paragraphs. Exact title-and-text deduplication kept conflicting versions separate so supporting sentences stayed attached to the correct text.
 
@@ -99,7 +99,7 @@ Timing: **{T['estimated_minutes']} minutes estimated, {T['actual_minutes']:.1f} 
 
 The useful habit is to make the reading policy visible before treating a chunk-size result as a production default.
 
-Code: <repo link placeholder>
+Code: https://github.com/nankris/chunk-size-multihop-fresh
 '''
 assert '—' not in text
 (P/'blog.md').write_text(text)

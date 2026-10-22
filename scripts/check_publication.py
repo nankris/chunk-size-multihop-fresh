@@ -7,7 +7,7 @@ required=['README.md','writeup.md','blog.md','figures/answer_f1.png','figures/ef
 assert all((P/f).is_file() for f in required)
 blog=(P/'blog.md').read_text();words=len(blog.split());assert 1200<=words<=1700,words
 assert '—' not in blog
-assert 'Code: <repo link placeholder>' in blog
+assert 'Code: https://github.com/nankris/chunk-size-multihop-fresh' in blog
 for f in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',blog):assert (P/f).is_file(),f
 assert json.loads((P/'results/validation.json').read_text())['passed']
 u=json.loads((P/'results/usage_final.json').read_text());assert u['cu_upper_bound']<=6,u
